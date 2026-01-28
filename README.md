@@ -1,36 +1,50 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Pastebin Lite
 
-## Getting Started
+A small Pastebin-like web application that allows users to create text pastes, generate a shareable link, and optionally expire pastes based on time or number of views.
 
-First, run the development server:
+---
 
+## How to Run the App Locally
+
+1. Clone the repository:
 ```bash
+git clone https://github.com/GURUPRASAD9100/pastebin-lite.git
+cd pastebin-lite
+2.Install dependencies:
+
+npm install
+3.Create a .env file in the project root and add:
+DATABASE_URL=postgresql://neondb_owner:npg_kvWGmp1LgS2J@ep-blue-dawn-a1djhb6c-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require
+4.Generate Prisma client:
+npx prisma generate
+5.Run the development server:
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+6.Open in browser:
+http://localhost:3000
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+#Persistence Layer Used
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+PostgreSQL (Neon cloud database)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Prisma ORM is used to interact with the database and manage schema.
 
-## Learn More
+This ensures data persists across requests and works correctly in a serverless deployment.
 
-To learn more about Next.js, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+#Important Design Decisions
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Used Next.js API routes for backend to keep the app serverless-friendly.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Used Prisma ORM for type-safe and reliable database operations.
+
+Used PostgreSQL (Neon) for persistent storage instead of in-memory storage.
+
+Implemented TTL (time-based expiry) and max-view limits directly in the backend logic.
+
+Generated short unique paste IDs using nanoid for clean URLs.
+
+Added a health check endpoint (/api/healthz) to verify system status.
+
+Ensured Prisma client generation during build for smooth Vercel deployment.
